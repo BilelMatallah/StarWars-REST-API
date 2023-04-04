@@ -7,6 +7,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    # favorites = db.relationship('Favorites')
 
     def serialize(self):
         return {
@@ -14,11 +15,12 @@ class User(db.Model):
             "email": self.email 
         }
 
-class Characters(db.models):
+class Characters(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
-    planet_id = db.Column(db.integer, db.ForeignKey('planet_id'))
-    planet = relationship(Planet)
+    planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'))
+    planet = db.relationship('Planet')
+    
 
     def serialize(self):
         return {
@@ -26,9 +28,11 @@ class Characters(db.models):
             "name": self.name 
         }
 
-class Planet(db.models):
+class Planet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
+    # characters = db.relationship('Characters')
+    # favorites = db.relationship('Favorites')
 
     def serialize(self):
         return {
@@ -36,14 +40,14 @@ class Planet(db.models):
             "name": self.name 
         }
 
-class Favorites(db.models):
+class Favorites(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
-    user_id = db.Column(db.Integer, ForeignKey('user.id'))
-    user = db.relationship(User)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User')
     
-    planet_id = Column(Integer, ForeignKey('planet.id'))
-    planet = relationship(Planet)
+    planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'))
+    planet = db.relationship('Planet')
 
     def serialize(self):
         return {

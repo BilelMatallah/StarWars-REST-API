@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Character, Planet, Favorites
+from models import db, User, Characters, Planet, Favorites
 #from models import Person
 
 app = Flask(__name__)
@@ -38,8 +38,8 @@ def sitemap():
 
 @app.route('/user', methods=['GET'])
 def get_user():
-    # all_user = User.query.all()
-    # serialize_user = list(map(lambda user: user.serialize(), all_user))
+    all_user = User.query.all()
+    serialize_all_user = list(map(lambda user: user.serialize(), all_user))
     all_user = request.get_json
     response_body = {
         "msg": "Hello, this is your GET /user response "
