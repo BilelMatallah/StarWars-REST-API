@@ -47,6 +47,12 @@ def get_user():
 
     return jsonify(serialize_user), 200
 
+@app.route('/user', methods=['POST'])
+def post_user(data):
+    
+     
+    
+
 
 
 
