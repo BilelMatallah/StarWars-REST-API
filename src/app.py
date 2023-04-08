@@ -36,19 +36,26 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+@app.route('/user', methods=['POST'])
+def new_user():
+    body = request.get_json
+    new_user = User(body, body['email'], body['password'])
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify(new_user,serialize()), 201
+
 @app.route('/user', methods=['GET'])
 def get_user():
     all_user = User.query.all()
     serialize_all_user = list(map(lambda user: user.serialize(), all_user))
-    all_user = request.get_json
     response_body = {
         "msg": "Hello, this is your GET /user response "
     }
 
-    return jsonify(serialize_user), 200
+    return jsonify(user.serialize_user()), 200
 
-@app.route('/user', methods=['POST'])
-def post_user(data):
+#@app.route('/user', methods=['POST'])
+    #def post_user(data):
     
      
     
