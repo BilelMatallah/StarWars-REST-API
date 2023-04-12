@@ -45,16 +45,23 @@ def get_user():
         "msg": "Hello, this is your GET /user response "
     }
 
-    return jsonify(user.serialize_user()), 200
+    return jsonify(serialize_all_user), 200
+
+@app.route('/user/<int:id>', methods=['GET'])
+def get_one_user(id):
+    
+    user = User.query.get(id)
+    
+    return jsonify(user.serialize()), 200
     
 
 @app.route('/user', methods=['POST'])
-def new_user():
-    body = request.get_json()
-    new_user = User(body['username'], body['email'], body['password'])
+def create_user():
+    data = request.get_json()
+    new_user = User(username = data['username'], email = data['email'], password = data['password'])
     db.session.add(new_user)
     db.session.commit()
-    return jsonify(new_user,serialize()), 200
+    return jsonify("NUEVO USER"), 200
 
 
 
