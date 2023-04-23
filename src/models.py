@@ -10,6 +10,12 @@ class User(db.Model):
     is_active = db.Column(db.Boolean(), unique=False)
     favorites = db.relationship('Favorites')
 
+    def __init__(self, username, email, password, is_active):
+        self.username = username,
+        self.email = email,
+        self.password = password,
+        self.is_active = True
+
     def __repr__(self):
         return f"{self.id}"
 
@@ -38,6 +44,10 @@ class Planet(db.Model):
     name = db.Column(db.String(80), unique=True, nullable=False)
     characters = db.relationship('Characters')
     favorites = db.relationship('Favorites')
+
+
+    def __init__(self, name):
+        self.name = name
 
     def serialize(self):
         return {

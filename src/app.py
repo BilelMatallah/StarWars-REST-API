@@ -38,7 +38,7 @@ def sitemap():
 
 
 @app.route('/user', methods=['GET'])
-def get_user():
+def get_users():
     all_user = User.query.all()
     serialize_all_user = list(map(lambda user: user.serialize(), all_user))
     response_body = {
@@ -58,10 +58,22 @@ def get_one_user(id):
 @app.route('/user', methods=['POST'])
 def create_user():
     data = request.get_json()
-    new_user = User(username = data['username'], email = data['email'], password = data['password'])
+    new_user = User(data['username'], data['email'], data['password'])
     db.session.add(new_user)
     db.session.commit()
     return jsonify("NUEVO USER"), 200
+
+
+@app.route('/planet', methods=['GET'])
+def get_planets():
+    all_planets = Planet.query.all()
+    serialize_all_planets = [planet.serialize() for planet in all_planets]
+    return jsonify(serialize_all_planets), 200
+
+@app.route('/planets/<int:planet_id>', methods=['GET'])
+def get_one_planet(id)
+    planet = Planet.query.get(id)
+    return jsonify(planet.serialize()), 200
 
 
 
